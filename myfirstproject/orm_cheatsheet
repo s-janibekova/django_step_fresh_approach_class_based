@@ -1,0 +1,65 @@
+1) Open manage.py shell
+from indexpage.models import Artice
+>>> Article
+>>> from indexpage.models import Article
+>>>  Article.objects.all()
+
+Создать
+>>> Article.objects.create(title="Python 3", body="DA",likes=0, type=2)
+>>> article = _
+
+Обновить
+>>> article.type=1
+
+Сохранить изменения
+>>> article.save()
+
+
+Опционально - узнать как делаются запросы в бд
+если вы неплохо знаете sql
+
+>>> python manage.py debugsqlshell
+>>> from indexpage.models import Article
+>>>  Article.objects.all()
+
+SELECT "indexpage_article"."id",
+       "indexpage_article"."title",
+       "indexpage_article"."body",
+       "indexpage_article"."likes",
+       "indexpage_article"."type",
+       "indexpage_article"."pub_date"
+FROM "indexpage_article"
+
+>>> Article.objects.get(pk=1) or (id=1)
+
+что такое фильтр
+>>> Article.objects.filter()
+
+поиск по содержанию можно реализовать примерно так
+
+>>> Article.objects.filter(body__icontains='some')
+>>> Article.objects.filter(body__startswith='so')
+
+Сложные запросы в бд через ORM
+>>> from django.db.models import Q
+>>> Q()
+>>> Q(a='b')
+<Q: (AND: ('a', 'b'))>
+>>> Q(spam="A")|Q( foo='bar')
+<Q: (OR: ('spam', 'A'), ('foo', 'bar'))>
+
+Complex запрос
+>>> Article.objects.filter(Q(title__startswith='article')|Q(title__icontains='Python'))
+Very complex
+>>> Article.objects.filter(Q(title__startswith='article')|Q(title__icontains='Python')& Q(body__startswith='python'))
+
+Advanced query
+>>> Article.objects.filter(Q(title__startswith='article')|Q(title__icontains='Python')& Q(body__startswith='python')).filter(id=1)
+
+Lifehack
+>>> Article.objects.filter(id__in=[1,])
+
+
+Как лучше обновлять данные:
+Article.objects.filter(
+  pk__in=[]).update(article.is_published = True)

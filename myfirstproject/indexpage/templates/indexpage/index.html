@@ -1,0 +1,16 @@
+{% extends 'indexpage/base.html' %}
+
+{% block title %}
+Index page
+{% endblock %}
+
+{% block body %}
+<h1>Hello form index page</h1>
+  {{ spam }}
+
+
+  <form method="post">
+  {% csrf_token %}
+    <input type="submit">
+  </form>
+{% endblock %}
